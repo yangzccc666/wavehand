@@ -1,30 +1,46 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
+  <div>
+        <div>username: {{ username }}</div>
+        <div>age: {{ age }}</div>
+  </div>
+
+    <NavBar/>
   <router-view/>
 </template>
 
+<script>
+import NavBar from './components/NavBar.vue'
+import { ref } from 'vue';
+import $ from 'jquery';
+
+export default {
+  name: 'App',
+  components: {
+    NavBar
+  },
+  setup() {
+    let username = ref('');
+    let age = ref('');
+
+    $.ajax({
+      url: 'http://localhost:3000/call/index/',
+      type: 'GET',
+      success: function(data) {
+        username.value = data.username;
+        age.value = data.age;
+      }
+    });
+
+    return {
+      username,
+      age
+    }
+  }
+}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+body {
+  background-color: red;
 }
 </style>
